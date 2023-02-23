@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/skullkid4200/Week-12-SQL-Project/issues"
   },
-  "homepage": "https://github.com/skullkid4200/Week-12-SQL-Project#readme"
+  "homepage": "https://github.com/skullkid4200/Week-12-SQL-Project#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.0.0",
+    "mysql2": "^3.1.2"
+  }
 }
