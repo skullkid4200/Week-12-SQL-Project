@@ -1,101 +1,165 @@
+//Constant Variables
 const inquirer = require('inquirer');
 const fs = require('fs/promises');
 const cTable = require('console.table');
-// const connection = require('./connection');
+const express = require('express');
+mysql = require('mysql2');
 
 
-inquirer
-  .prompt([
-    {
-      type: 'list',
-      choices: ["View All Employees", new inquirer.Separator(), 
-    "Add Employee", new inquirer.Separator(), "Update Employee Role", new inquirer.Separator(),
-    "View All Roles", new inquirer.Separator(), "Add Role", new inquirer.Separator(), 
-    "View All Departments", new inquirer.Separator(), "Add Department", new inquirer.Separator()],
-      message: 'What would you like to do?',
-      name: 'choices',
-    }
+// Server 
+const app = express()
+const port = 3001
 
-  ])
-  .then((answers) => {
-    const {choices} = answers;
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+// Express middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+// Connect to database
+const db = mysql.createConnection(
+  {
+    host: 'localhost',
+    // MySQL username,
+    user: 'root',
+    // MySQL password
+    password: 'Rootr00t!',
+    database: 'employees_db'
+  },
+  console.log(`Connected to the courses_db database.`)
+);
+
+const prompInit = () => {
+  inquirer
+    .prompt([
+      {
+        type: 'list',
+        choices: ["View All Employees", new inquirer.Separator(),
+          "Add Employee", new inquirer.Separator(), "Update Employee Role", new inquirer.Separator(),
+          "View All Roles", new inquirer.Separator(), "Add Role", new inquirer.Separator(),
+          "View All Departments", new inquirer.Separator(), "Add Department", new inquirer.Separator()],
+        message: 'What would you like to do?',
+        name: 'choices',
+      }
+
+    ])
+    .then((answers) => {
+      const { choices } = answers;
 
       if (choices === 'View All Employees') {
-          viewAllEmployees();
+        viewAllEmployees();
       }
 
       if (choices === 'View All Departments') {
         viewAllDepartments();
-    }
-
-      if (choices === 'View All Employees By Department') {
-          viewEmployeesByDepartment();
       }
 
       if (choices === 'Add Employee') {
-          addEmployee();
-      }
-
-      if (choices === 'Remove Employee') {
-          removeEmployee();
+        addEmployee();
       }
 
       if (choices === 'Update Employee Role') {
-          updateEmployeeRole();
-      }
-
-      if (choices === 'Update Employee Manager') {
-          updateEmployeeManager();
+        updateEmployeeRole();
       }
 
       if (choices === 'View All Roles') {
-          viewAllRoles();
+        viewAllRoles();
       }
 
       if (choices === 'Add Role') {
-          addRole();
-      }
-
-      if (choices === 'Remove Role') {
-          removeRole();
+        addRole();
       }
 
       if (choices === 'Add Department') {
-          addDepartment();
-      }
-
-      if (choices === 'View Department Budgets') {
-          viewDepartmentBudget();
-      }
-
-      if (choices === 'Remove Department') {
-          removeDepartment();
+        addDepartment();
       }
 
       if (choices === 'Exit') {
-          connection.end();
+        connection.end();
       }
-});
+    })
+};
 
-//view employees
-const viewAllEmployees = () => {
-  let sql =       `SELECT employee.id, 
-                  employee.first_name, 
-                  employee.last_name, 
-                  role.title, 
-                  department.department_name AS 'department', 
-                  role.salary
-                  FROM employee, role, department 
-                  WHERE department.id = role.department_id 
-                  AND role.id = employee.role_id
-                  ORDER BY employee.id ASC`;
-  connection.promise().query(sql, (error, response) => {
-    if (error) throw error;
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`Current Employees:`));
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.table(response);
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    promptUser();
+//Command Line Program Begin 
+prompInit()
+
+
+//Selector Functions
+function viewAllEmployees() {
+  db.query(`SELECT * FROM EMPLOYEE`, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(result);
   });
+  prompInit()
+}
+
+function viewAllDepartments() {
+  db.query(`SELECT * FROM DEPARTMENT`, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(result);
+  });
+  prompInit()
+};
+
+function viewAllRoles() {
+  db.query(`SELECT * FROM ROLES`, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(result);
+  });
+  prompInit()
+};
+
+function addEmployee() {
+  inquirer.prompt([
+    {
+      type: "input",
+      message: "What is the Employee's name?",
+      name: 'addEmployee',
+    }
+  ])
+    .then
+  db.query(`INSERT INTO employee`, answers)
+  prompInit()
+};
+
+function updateEmployeeRole() {
+  db.query(``, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(result);
+  });
+  prompInit()
+};
+
+function addRole() {
+  db.query(``, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(result);
+  });
+  prompInit()
+};
+
+function addDepartment() {
+  db.query(``, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(result);
+  });
+  prompInit()
 };
