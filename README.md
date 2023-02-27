@@ -64,6 +64,6 @@ SOFTWARE.
 
 ## Links
 
-GITHUB REPO: https://github.com/skullkid4200/Week-11-Note-Taker-Project
+GITHUB REPO: https://github.com/skullkid4200/Week-12-SQL-Project
 
-LIVE HEROKU APP: https://jack-einhorn-note-taker-app.herokuapp.com/
+VIDEO DEMONSTRATION: https://drive.google.com/file/d/19T_f8B2vHcpv6VTzhizgQ-gBkhsh1rw5/view
